@@ -1,0 +1,33 @@
+{
+  "name": "zackx/lumen-swoole",
+  "description": "speed up lumen framework by swoole",
+  "keywords": [
+    "swoole",
+    "lumen",
+    "http",
+    "server"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "zack",
+      "email": "zack@zackx.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.3",
+    "ext-swoole": "*",
+    "laravel/lumen-framework": ">=5.7"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "files": [
+      "src/helpers.php"
+    ],
+    "psr-4": {
+      "Zackx\\LumenSwoole\\": "src/"
+    }
+  }
+}
