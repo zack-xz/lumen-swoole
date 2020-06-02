@@ -66,7 +66,7 @@ if (! function_exists('set_header')) {
     /**
      * set header
      */
-    function set_header()
+    function set_header($key, $value)
     {
         if (\Swoole\Coroutine::getCid() < 0) {     //不在swoole 环境
             header($key . ':' . $value);
