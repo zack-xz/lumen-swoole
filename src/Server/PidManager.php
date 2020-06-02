@@ -27,7 +27,7 @@ class PidManager
     public function getPid()
     {
         return file_exists($this->pidFile) ?
-            intval(file_get_contents($this->pidFile)) :
+            intval(@file_get_contents($this->pidFile)) :
             0;
     }
 

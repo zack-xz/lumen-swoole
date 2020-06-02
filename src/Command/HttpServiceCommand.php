@@ -92,6 +92,10 @@ class HttpServiceCommand extends Command
      */
     protected function reload()
     {
+        if (!$this->isRunning()) {
+            $this->error('swoole http server is not running');
+            exit(1);
+        }
         $this->info('reloading...');
         $this->killProcess(SIGUSR1);
         $this->info('done');
@@ -105,13 +109,13 @@ class HttpServiceCommand extends Command
      */
     protected function stop()
     {
-        if (!$pid = $this->laravel->make(PidManager::class)->getPid()) {
+        $pid = $this->laravel->make(PidManager::class)->getPid();
+        if (!$pid) {
             $this->error('swoole http server is not running');
             return false;
         }
-        if ($this->killProcess(SIGTERM, 15)) {
+        if (!$this->killProcess(SIGTERM, 15)) {
             $this->info('swoole closed successful!');
-            $this->laravel->make(PidManager::class)->delete();
         } else {
             $this->info('swoole closed fail!');
             exit(1);
@@ -143,11 +147,11 @@ class HttpServiceCommand extends Command
      */
     protected function killProcess($sig, $wait = 0)
     {
+        $pid = $this->laravel->make(PidManager::class)->getPid();
         Process::kill(
-            $this->laravel->make(PidManager::class)->getPid(),
+            $pid,
             $sig
         );
-
         if ($wait) {
             $start = time();
             do {
@@ -155,7 +159,7 @@ class HttpServiceCommand extends Command
                     break;
                 }
 
-                usleep(100000);
+                usleep(10000);
             } while (time() < $start + $wait);
         }
 
