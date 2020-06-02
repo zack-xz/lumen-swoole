@@ -26,9 +26,11 @@ class Request
         $get = isset($request->get) ? $request->get : [];
         $post = isset($request->post) ? $request->post : [];
         $cookie = isset($request->cookie) ? $request->cookie : [];
-        $server = self::convertServer($request->header, $request->server);
+        $header = isset($request->header) ? $request->header : [];
+        $swooleServer = isset($request->server) ? $request->server : [];
+        $server = self::convertServer($header, $swooleServer);
         $files = isset($request->files) ? $request->files : [];
-        $content = $request->rawContent() ?: null;
+        $content = empty($request) ? null : $request->rawContent();
 
         return self::createIlluminateRequest($get, $post, $cookie, $files, $server, $content);
     }
@@ -75,7 +77,8 @@ class Request
             $resultServer['HTTPS'] = 'on';
         }
         //request uri
-        if (strpos($resultServer['REQUEST_URI'], '?') === false &&
+        if (isset($resultServer['REQUEST_URI']) &&
+            strpos($resultServer['REQUEST_URI'], '?') === false &&
             isset($resultServer['QUERY_STRING']) &&
             strlen($resultServer['QUERY_STRING']) > 0
         ) {

@@ -69,7 +69,6 @@ class HttpServiceCommand extends Command
             $this->error('swoole http server is already running');
             exit(1);
         }
-
         $this->info('starting swoole http server...');
         $this->laravel->make('swoole.http')->run();
     }
