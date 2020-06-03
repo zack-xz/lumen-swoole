@@ -39,7 +39,8 @@ class SwooleHttpProvider extends ServiceProvider
     {
         $this->app->configure('swoole_http');
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/swoole_http.php', 'swoole_http'
+            __DIR__ . '/../config/swoole_http.php',
+            'swoole_http'
         );
     }
 
@@ -57,6 +58,5 @@ class SwooleHttpProvider extends ServiceProvider
             $pidFile = $app->make('config')->get('swoole_http.pid_file');
             return new PidManager($pidFile);
         });
-
     }
 }
