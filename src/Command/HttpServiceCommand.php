@@ -148,7 +148,7 @@ class HttpServiceCommand extends Command
     protected function killProcess($sig, $wait = 0)
     {
         $pid = $this->laravel->make(PidManager::class)->getPid();
-        Process::kill(
+        @Process::kill(
             $pid,
             $sig
         );
