@@ -15,7 +15,10 @@ if (! function_exists('get_coroutine_id')) {
      */
     function get_coroutine_id()
     {
-        return \Swoole\Coroutine::getCid();
+        if (@class_exists('Swoole\Coroutine')) {
+            return \Swoole\Coroutine::getCid();
+        }
+        return -1;
     }
 }
 
@@ -68,7 +71,7 @@ if (! function_exists('set_header')) {
      */
     function set_header($key, $value)
     {
-        if (\Swoole\Coroutine::getCid() < 0) {     //不在swoole 环境
+        if (get_coroutine_id() < 0) {     //不在swoole 环境
             header($key . ':' . $value);
         } else {
             $response = get_swoole_http_response();
